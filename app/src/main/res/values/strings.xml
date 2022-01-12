@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Get List</string>
+    <string name="register_first_name">First Name</string>
+    <string name="register_last_name">Last Name</string>
+    <string name="register_phone">Phone</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Password</string>
+    <string name="register_register_btn">Register</string>
+    <string name="register_sign_in">Sign In</string>
+    <string name="register_register_page_name">Register</string>
+    <string name="login_sign_up">Sign Up</string>
+    <string name="login_login_btn">Login</string>
+    <string name="login_password">Password</string>
+    <string name="login_email">Email</string>
+    <string name="login_page_name">Login</string>
+    <string name="login_forgot_password">Forgot Your Password?</string>
+    <string name="list_item_listName">list Name:</string>
+</resources>

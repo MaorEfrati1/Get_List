@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".Register">
+
+
+    <TextView
+        android:id="@+id/register_Tv_AppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="70dp"
+        android:text="@string/app_name"
+        android:textSize="35sp" />
+
+
+    <TextView
+        android:id="@+id/register_Tv_PageName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/register_register_page_name"
+        android:textSize="25sp" />
+
+    <EditText
+        android:id="@+id/register_Et_FirstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/register_first_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp" />
+
+
+    <EditText
+        android:id="@+id/register_Et_LastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/register_last_name"
+        android:inputType="textPersonName"
+        android:minHeight="48dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp" />
+
+
+    <EditText
+        android:id="@+id/register_Et_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/register_email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/register_Et_Password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/register_password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:paddingTop="10dp"
+        android:textSize="16sp" />
+
+
+    <Button
+        android:id="@+id/register_Btn_Register"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black"
+        android:ems="10"
+        android:paddingTop="10dp"
+        android:text="@string/register_register_btn"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="506dp" />
+
+    <TextView
+        android:id="@+id/register_Tv_SignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/register_sign_in" />
+
+    <ProgressBar
+        android:id="@+id/register_Pb_Loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="10dp"
+        android:visibility="invisible" />
+</androidx.appcompat.widget.LinearLayoutCompat>

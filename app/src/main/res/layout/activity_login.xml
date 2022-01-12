@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".Login">
+
+    <TextView
+        android:id="@+id/login_Tv_AppName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="70dp"
+        android:text="@string/app_name"
+        android:textSize="35sp" />
+
+
+    <TextView
+        android:id="@+id/login_Tv_PageName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:paddingTop="10dp"
+        android:text="@string/login_page_name"
+        android:textSize="25sp" />
+
+
+    <EditText
+        android:id="@+id/login_Et_Email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/login_email"
+        android:inputType="textEmailAddress"
+        android:minHeight="48dp"
+        android:textSize="16sp" />
+
+    <EditText
+        android:id="@+id/login_Et_Password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:ems="10"
+        android:hint="@string/login_password"
+        android:inputType="textPassword"
+        android:minHeight="48dp"
+        android:textSize="16sp" />
+
+
+    <TextView
+        android:id="@+id/login_Tv_ForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+
+
+        android:text="@string/login_forgot_password" />
+
+    <Button
+        android:id="@+id/login_Btn_Login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:backgroundTint="@color/black"
+        android:text="@string/login_login_btn"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="506dp" />
+
+    <TextView
+        android:id="@+id/login_Btn_SignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+
+        android:text="@string/login_sign_up"
+
+        android:textSize="15sp" />
+
+    <ProgressBar
+        android:id="@+id/login_Pb_Loading"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
+        android:layout_marginBottom="10dp"
+        android:visibility="invisible" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "282918716216",
+    "firebase_url": "https://get-list-eb030-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "get-list-eb030",
+    "storage_bucket": "get-list-eb030.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:282918716216:android:114a207dab417ac22437cd",
+        "android_client_info": {
+          "package_name": "dev.maore.getlist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "282918716216-cpt3nv472puotldfo6qr7sehlfjr92oo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCN1JUouYlJJJGMg2wDITzngd0pOc00yas"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "282918716216-cpt3nv472puotldfo6qr7sehlfjr92oo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
