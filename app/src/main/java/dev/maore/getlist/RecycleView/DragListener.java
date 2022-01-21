@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import dev.maore.getlist.Model.List_Item;
 import dev.maore.getlist.R;
 
 public class DragListener implements View.OnDragListener {
@@ -64,8 +65,8 @@ public class DragListener implements View.OnDragListener {
 
                         ListAdapter adapterSource = (ListAdapter) source.getAdapter();
                         assert adapterSource != null;
-                        String list = adapterSource.getLists().get(positionSource);
-                        List<String> listSource = adapterSource.getLists();
+                        List_Item list = adapterSource.getLists().get(positionSource);
+                        List<List_Item> listSource = adapterSource.getLists();
 
                         listSource.remove(positionSource);
                         adapterSource.updateList(listSource);
@@ -73,7 +74,7 @@ public class DragListener implements View.OnDragListener {
 
                         ListAdapter adapterTarget = (ListAdapter) target.getAdapter();
                         assert adapterTarget != null;
-                        List<String> customListTarget = adapterTarget.getLists();
+                        List<List_Item> customListTarget = adapterTarget.getLists();
                         if (positionTarget >= 0) {
                             customListTarget.add(positionTarget, list);
                         } else {

@@ -20,15 +20,16 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.maore.getlist.Model.List_Item;
 import dev.maore.getlist.R;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder>
         implements View.OnTouchListener {
 
-    private List<String> lists;
+    private List<List_Item> lists;
     private final Listener listener;
 
-    public ListAdapter(List<String> lists, Listener listener) {
+    public ListAdapter(List<List_Item> lists, Listener listener) {
         this.lists = lists;
         this.listener = listener;
     }
@@ -44,7 +45,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(ListViewHolder holder, int position) {
-        holder.listName.setText(lists.get(position));
+        holder.listName.setText(lists.get(position).getListName());
         holder.MaterialCardView.setTag(position);
         holder.MaterialCardView.setOnTouchListener(this);
         holder.MaterialCardView.setOnDragListener(new dev.maore.getlist.RecycleView.DragListener(listener));
@@ -68,11 +69,11 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         return false;
     }
 
-    List<String> getLists() {
+    List<List_Item> getLists() {
         return lists;
     }
 
-    public void updateList(List<String> list) {
+    public void updateList(List<List_Item> list) {
         this.lists = list;
     }
 

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private Button LogOut;
     private Button AddList;
 
-    private List<String> inProcessList;
+    private List<List_Item> inProcessList;
     private List<Lists> allLists;
 
     //Recycle View
@@ -88,19 +88,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         tvEmptyListDone.setVisibility(View.GONE);
 
         //Views
-
-        listName = findViewById(R.id.Main_Tv_HeaderInProcess);
-//        listName= findViewById(R.id.List_Tv_listName);
-//
-//        listName.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//            }
-//        });
-//
-
-
+        //Add list btn
         AddList = findViewById(R.id.Main_Btn_AddList);
 
         AddList.setOnClickListener(v -> {
@@ -108,7 +96,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
             finish();
         });
 
-
+        //Log out btn
         LogOut = findViewById(R.id.Main_Btn_LogOut);
 
         LogOut.setOnClickListener(v -> {
@@ -150,7 +138,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void dataReady(List_Item list_items) {
-                            inProcessList.add(list_items.getListName());
+                            inProcessList.add(list_items);
                             inProcessListAdapter.updateList(inProcessList);
                             inProcessListAdapter.notifyDataSetChanged();
                         }
@@ -172,7 +160,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
         rvDone.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL, false));
 
-        List<String> doneList = new ArrayList<>();
+        List<List_Item> doneList = new ArrayList<>();
 //        doneList.add("list C");
 //        doneList.add("list D");
 
