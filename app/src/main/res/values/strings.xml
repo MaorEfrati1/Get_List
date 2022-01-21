@@ -15,4 +15,12 @@
     <string name="login_page_name">Login</string>
     <string name="login_forgot_password">Forgot Your Password?</string>
     <string name="list_item_listName">list Name:</string>
+    <string name="main_Tv_InProcess">In Process</string>
+    <string name="main_Tv_WellDone">Well Done!</string>
+    <string name="main_Tv_Done">Done!</string>
+    <string name="main_Tv_YouNeedToDoSomeWork">You Need To do Some work!</string>
+    <string name="addList_Tv_Add">ADD</string>
+    <string name="addList_Btn_add">ADD TASK</string>
+    <string name="Main_Btn_LogOut">Log Out</string>
+    <string name="Main_Btn_add">ADD List</string>
 </resources>

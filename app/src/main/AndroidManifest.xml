@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="dev.maore.getlist">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,13 +12,16 @@
         android:supportsRtl="false"
         android:theme="@style/Theme.GetList">
         <activity
-            android:name=".MainActivity"
+            android:name=".Model.AddList"
             android:exported="false" />
         <activity
-            android:name=".Register"
+            android:name=".Model.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".Login"
+            android:name=".Model.Register"
+            android:exported="false" />
+        <activity
+            android:name=".Model.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

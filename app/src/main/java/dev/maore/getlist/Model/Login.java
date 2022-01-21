@@ -1,14 +1,11 @@
-package dev.maore.getlist;
+package dev.maore.getlist.Model;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +19,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import dev.maore.getlist.R;
 
 public class Login extends AppCompatActivity {
     //FireBase
@@ -99,8 +98,7 @@ public class Login extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
 
-                    //update user data from auth to DB
-                    updateUserPasswordAfterForgot(password);
+
 
                     Toast.makeText(Login.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, MainActivity.class));
@@ -136,24 +134,22 @@ public class Login extends AppCompatActivity {
     }
 
     //update user data from auth to DB
-    public void updateUserPasswordAfterForgot(String password){
+    public void updateUserPasswordAfterForgot(String password) {
         if (fAuth.getCurrentUser() != null) {
             String userUid = fAuth.getCurrentUser().getUid();
 
             // Read from the database
             DatabaseReference userRef = database.getReference("users");
+
             userRef.child(userUid).addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    String userPasswordFromDb = dataSnapshot.getValue(User.class).getPassword();
-                    if (!userPasswordFromDb.equals(password)){
-                        userRef.child(userUid).child("password").setValue(password);
-                    }
                 }
 
                 @Override
                 public void onCancelled(DatabaseError error) {
-                    Toast.makeText(Login.this, "Error - Cannot Read User From Database", Toast.LENGTH_SHORT).show();                            }
+                    Toast.makeText(Login.this, "Error - Cannot Read User From Database", Toast.LENGTH_SHORT).show();
+                }
             });
         }
     }

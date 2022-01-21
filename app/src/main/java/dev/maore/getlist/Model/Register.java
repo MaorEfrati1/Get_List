@@ -1,4 +1,4 @@
-package dev.maore.getlist;
+package dev.maore.getlist.Model;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,8 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import dev.maore.getlist.R;
 
 public class Register extends AppCompatActivity {
     //FireBase
@@ -101,11 +103,12 @@ public class Register extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     //New User
                     if (fAuth.getCurrentUser() != null) {
+
                         User user = new User(fAuth.getCurrentUser().getUid())
                                 .setFirstName(firstName)
                                 .setLastName(lastName)
-                                .setEmail(email)
-                                .setPassword(password);
+                                .setEmail(email);
+//                                .setLists();
 
                         //Add User To DB
                         DatabaseReference userRef = database.getReference("users");

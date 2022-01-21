@@ -2,11 +2,12 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="180dp"
+    android:id="@+id/List_MCV_Item"
+    android:layout_width="160dp"
     android:layout_height="70dp"
     android:layout_marginStart="5dp"
     android:layout_marginTop="5dp"
-    android:layout_marginEnd="10dp"
+    android:layout_marginEnd="30dp"
     android:layout_marginBottom="10dp"
     android:elevation="8dp"
     app:cardCornerRadius="8dp"
@@ -44,7 +45,6 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_marginStart="4dp"
                 android:layout_weight="60"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
@@ -55,8 +55,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
+                    android:layout_marginStart="4dp"
+                    android:textSize="15sp"
                     android:paddingTop="5dp"
-
                     android:text="@string/list_item_listName" />
 
             </LinearLayout>
@@ -76,11 +77,13 @@
                     android:layout_weight="1"
                     android:src="@drawable/edit" />
 
-                <View
-                    android:id="@+id/view"
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/List_Iv_Share"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5" />
+                    android:layout_weight="1"
+                    android:src="@drawable/share" />
+
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/List_Iv_Delete"

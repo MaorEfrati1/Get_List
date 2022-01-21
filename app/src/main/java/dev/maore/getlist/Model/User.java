@@ -1,15 +1,16 @@
-package dev.maore.getlist;
+package dev.maore.getlist.Model;
+
+import java.util.ArrayList;
 
 public class User {
     private String firstName = "";
     private String lastName = "";
     private String email = "";
-    private String password = "";
     private String uid;
+    private ArrayList<List_Item> lists = new ArrayList<>();
 
     public User() {
     }
-
 
     public User(String uid) {
         this.uid = uid;
@@ -42,15 +43,6 @@ public class User {
         return this;
     }
 
-    public String getPassword() {
-        return password;
-    }
-
-    public User setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
     public String getUid() {
         return uid;
     }
@@ -60,14 +52,23 @@ public class User {
         return this;
     }
 
+    public ArrayList<List_Item> getLists() {
+        return lists;
+    }
+
+    public User setLists(ArrayList<List_Item> lists) {
+        this.lists = lists;
+        return this;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
                 ", email='" + email + '\'' +
-                ", password='" + password + '\'' +
                 ", uid='" + uid + '\'' +
+                ", lists=" + lists +
                 '}';
     }
 }
