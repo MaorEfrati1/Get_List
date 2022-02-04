@@ -1,10 +1,15 @@
 package dev.maore.getlist.RecycleView;
 
 import android.annotation.SuppressLint;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -12,9 +17,13 @@ import dev.maore.getlist.Model.List_Item;
 import dev.maore.getlist.R;
 
 public class DragListener implements View.OnDragListener {
+    //FireBase
+    //DataBase
+    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+
 
     private boolean isDropped = false;
-    private final Listener listener;
+    private Listener listener;
 
     DragListener(Listener listener) {
         this.listener = listener;
@@ -63,6 +72,7 @@ public class DragListener implements View.OnDragListener {
                         int positionSource = (int) viewSource.getTag();
                         int sourceId = source.getId();
 
+                        //Source
                         ListAdapter adapterSource = (ListAdapter) source.getAdapter();
                         assert adapterSource != null;
                         List_Item list = adapterSource.getLists().get(positionSource);
@@ -72,6 +82,7 @@ public class DragListener implements View.OnDragListener {
                         adapterSource.updateList(listSource);
                         adapterSource.notifyDataSetChanged();
 
+                        //Target
                         ListAdapter adapterTarget = (ListAdapter) target.getAdapter();
                         assert adapterTarget != null;
                         List<List_Item> customListTarget = adapterTarget.getLists();
@@ -95,6 +106,38 @@ public class DragListener implements View.OnDragListener {
                         if (viewId == tvEmptyListInProcess) {
                             listener.setEmptyListInProcess(false);
                         }
+
+
+                        //Update changes in List item PROCESS && POSITION in DB
+                        DatabaseReference listItemRef = database.getReference("lists");
+
+                        if (sourceId == rvInProcess && adapterTarget != adapterSource) {
+                            //update List Item process
+                            listItemRef.child(list.getUid()).child("process").setValue("DONE");
+
+                            //update List Item pos
+                            updatePosListsItem(listItemRef, customListTarget);
+                        }
+
+                        if (sourceId == rvDone && adapterTarget != adapterSource) {
+                            //update List Item process
+                            listItemRef.child(list.getUid()).child("process").setValue("IN_PROCESS");
+
+                            //update List Item pos
+                            updatePosListsItem(listItemRef, customListTarget);
+                        }
+
+                        //Update changes in the RV of List item POSITION in DB
+                        if (sourceId == rvInProcess && adapterTarget == adapterSource) {
+                            //update List Item pos
+                            updatePosListsItem(listItemRef, customListTarget);
+                        }
+                        if (sourceId == rvDone && adapterTarget == adapterSource) {
+                            //update List Item pos
+                            updatePosListsItem(listItemRef, customListTarget);
+                        }
+
+
                     }
                     break;
             }
@@ -106,5 +149,11 @@ public class DragListener implements View.OnDragListener {
         return true;
     }
 
+    public void updatePosListsItem(DatabaseReference listItemRef, List<List_Item> customListTarget) {
+        for (int i = 0; i < customListTarget.size(); i++) {
+            String listSourceUid = customListTarget.get(i).getUid();
+            listItemRef.child(listSourceUid).child("position").setValue(i);
 
+        }
+    }
 }

@@ -1,18 +1,13 @@
 package dev.maore.getlist.RecycleView;
 
-import static dev.maore.getlist.Model.FireBaseDB.getListItemTasks;
-import static dev.maore.getlist.Model.FireBaseDB.getList_Item;
-
 import android.annotation.SuppressLint;
 import android.content.ClipData;
-
 import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,17 +19,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.maore.getlist.Model.FireBaseDB;
 import dev.maore.getlist.Model.List_Item;
-import dev.maore.getlist.Model.Lists;
 import dev.maore.getlist.R;
 
-public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder>
+public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListViewHolder>
         implements View.OnTouchListener {
     //FireBase
     //Auth
@@ -51,7 +44,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     public static boolean isDeleteListItem = false;
 
-    public ListAdapter(List<List_Item> lists, Listener listener) {
+    public ListItemAdapter(List<List_Item> lists, Listener listener) {
         this.lists = lists;
         this.listener = listener;
     }
@@ -83,7 +76,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 //        holder.list_item.setProcess(list_item.getProcess());
         holder.MaterialCardView.setTag(position);
         holder.MaterialCardView.setOnTouchListener(this);
-        holder.MaterialCardView.setOnDragListener(new dev.maore.getlist.RecycleView.DragListener(listener));
+        holder.MaterialCardView.setOnDragListener(new DragListener(listener));
         holder.list_item = list_item;
     }
 
@@ -115,9 +108,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         this.lists = list;
     }
 
-    public dev.maore.getlist.RecycleView.DragListener getDragInstance() {
+    public DragListener getDragInstance() {
         if (listener != null) {
-            return new dev.maore.getlist.RecycleView.DragListener(listener);
+            return new DragListener(listener);
         } else {
             Log.e("ListAdapter", "Listener wasn't initialized!");
             return null;
@@ -204,6 +197,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     }
 
     public static void setIsDeleteListItem(boolean isDeleteListItem) {
-        ListAdapter.isDeleteListItem = isDeleteListItem;
+        ListItemAdapter.isDeleteListItem = isDeleteListItem;
     }
 }

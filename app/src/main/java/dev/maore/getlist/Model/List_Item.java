@@ -1,15 +1,18 @@
 package dev.maore.getlist.Model;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class List_Item {
+public class List_Item  implements Comparable<List_Item>{
 
     private String uid;
     private String listName;
     private int position;
     private String process;
     private List<String> TaskList = new ArrayList<>();
+
     private enum process {
         IN_PROCESS,
         DONE
@@ -67,13 +70,38 @@ public class List_Item {
         return this;
     }
 
+    public int compareTo(List_Item list) {
+        int comparePosition = ((List_Item) list).getPosition();
+
+        //ascending order
+        return this.position - comparePosition;
+    }
+
     @Override
     public String toString() {
-        return "Lists{" +
+        return "List_Item{" +
                 "uid='" + uid + '\'' +
                 ", listName='" + listName + '\'' +
                 ", position=" + position +
                 ", process='" + process + '\'' +
+                ", TaskList=" + TaskList +
                 '}';
     }
+
+    public String ShareListItem(String userFirstName,String userLastName,List<String> TaskList) {
+        String share;
+        StringBuilder temp= new StringBuilder();
+        for (int i=0;i<TaskList.size();i++){
+            temp.append(i+1).append(") ").append(TaskList.get(i)).append("\n");
+        }
+
+        share ="Hi,\n\n" +userFirstName +" "+userLastName+" share List with you:\n"+
+                "\nList Name: " +listName+
+                "\n\n Tasks: \n" + temp;
+
+        Log.d("listItemTasks",toString());
+        return share;
+    }
+
+
 }

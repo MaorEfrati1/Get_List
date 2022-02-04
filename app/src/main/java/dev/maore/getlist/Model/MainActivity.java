@@ -1,6 +1,8 @@
 package dev.maore.getlist.Model;
 
-import androidx.annotation.NonNull;
+import static dev.maore.getlist.RecycleView.ListAdapter.getIsIsDeleteListItem;
+import static dev.maore.getlist.RecycleView.ListAdapter.setIsDeleteListItem;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -11,22 +13,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,8 +43,15 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private Button LogOut;
     private Button AddList;
 
-    private List<List_Item> inProcessList;
+    //LISTS
+    private List<List_Item> inProcessList = new ArrayList<>();
+    private List<List_Item> doneList = new ArrayList<>();
     private List<Lists> allLists;
+    private final ListAdapter doneListAdapter = new ListAdapter(doneList, this);
+    private final ListAdapter inProcessListAdapter = new ListAdapter(inProcessList, this);
+
+    private Timer timer;
+    private static final int DELAY = 0;
 
     //Recycle View
     @SuppressLint("NonConstantResourceId")
@@ -64,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     //List Item
     TextView listName;
 
+    @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,12 +82,10 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
         //Initialize Firebase Database
         database = FirebaseDatabase.getInstance();
-//        DatabaseReference myRef = database.getReference("message");
-//        myRef.setValue("Hello, World!");
+
 
         //Recycle View
         ButterKnife.bind(this);
-
         initInProcessRecyclerView();
         initDoneRecyclerView();
 
@@ -104,7 +109,6 @@ public class MainActivity extends AppCompatActivity implements Listener {
             startActivity(new Intent(MainActivity.this, Login.class));
             finish();
         });
-
     }
 
 
@@ -125,30 +129,35 @@ public class MainActivity extends AppCompatActivity implements Listener {
         rvInProcess.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL, false));
 
-        inProcessList = new ArrayList<>();
-        ListAdapter inProcessListAdapter = new ListAdapter(inProcessList, this);
 
         FireBaseDB.getLists(fAuth, database, new FireBaseDB.Callback_Lists() {
             @Override
             public void dataReady(List<Lists> lists) {
                 allLists = lists;
+
                 for (int i = 0; i < lists.size(); i++) {
 
                     FireBaseDB.getList_Item(database, allLists.get(i).getUid(), new FireBaseDB.Callback_ListItem() {
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void dataReady(List_Item list_items) {
-                            inProcessList.add(list_items);
-                            inProcessListAdapter.updateList(inProcessList);
-                            inProcessListAdapter.notifyDataSetChanged();
+                            if (list_items.getProcess().equals("IN_PROCESS")) {
+
+                                //add List item & update RV
+                                inProcessList.add(list_items);
+
+                                //Sort by pos
+                                inProcessList.sort(List_Item::compareTo);
+
+                                //Update RV List
+                                inProcessListAdapter.updateList(inProcessList);
+                                inProcessListAdapter.notifyDataSetChanged();
+                            }
                         }
                     });
                 }
             }
         });
-
-        //inProcessList.add("list A");
-//        inProcessList.add("list B");
 
 
         rvInProcess.setAdapter(inProcessListAdapter);
@@ -160,13 +169,37 @@ public class MainActivity extends AppCompatActivity implements Listener {
         rvDone.setLayoutManager(new LinearLayoutManager(
                 this, LinearLayoutManager.VERTICAL, false));
 
-        List<List_Item> doneList = new ArrayList<>();
-//        doneList.add("list C");
-//        doneList.add("list D");
+        FireBaseDB.getLists(fAuth, database, new FireBaseDB.Callback_Lists() {
+            @Override
+            public void dataReady(List<Lists> lists) {
+                allLists = lists;
+                for (int i = 0; i < lists.size(); i++) {
 
-        ListAdapter doneListAdapter = new ListAdapter(doneList, this);
+                    FireBaseDB.getList_Item(database, allLists.get(i).getUid(), new FireBaseDB.Callback_ListItem() {
+                        @SuppressLint("NotifyDataSetChanged")
+                        @Override
+                        public void dataReady(List_Item list_items) {
+                            if (list_items.getProcess().equals("DONE")) {
+
+                                //add List item & update RV
+                                doneList.add(list_items);
+
+                                //Sort by pos
+                                doneList.sort(List_Item::compareTo);
+
+                                //Update RV List
+                                doneListAdapter.updateList(doneList);
+                                doneListAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    });
+                }
+
+            }
+        });
         rvDone.setAdapter(doneListAdapter);
         tvEmptyListDone.setOnDragListener(doneListAdapter.getDragInstance());
         rvDone.setOnDragListener(doneListAdapter.getDragInstance());
     }
+
 }
