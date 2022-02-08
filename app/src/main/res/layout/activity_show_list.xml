@@ -22,55 +22,28 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
-            android:layout_weight="0.5"
+            android:layout_weight="15"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/AddList_Tv_AddTask"
+                android:id="@+id/ShowList_Tv_AddTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center"
-                android:text="@string/addList_Tv_Add"
+                android:text="@string/list_item_listName"
                 android:textColor="@color/brown"
-                android:textSize="28sp" />
+                android:textSize="30sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-
-
-            <TextView
-                android:id="@+id/AddList_Tv_EnterListName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="5dp"
-                android:text="@string/addList_Tv_EnterListName"
-                android:textColor="@color/brown"
-                android:textSize="20sp" />
-
-            <EditText
-                android:id="@+id/AddList_Et_AddListName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.8"
+            android:layout_weight="20"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/AddList_Tv_EnterTask"
+                android:id="@+id/ShowList_Tv_EnterTask"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -86,13 +59,13 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/AddList_Et_AddTask"
+                    android:id="@+id/ShowList_Et_AddTask"
                     android:layout_width="280dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp" />
 
                 <Button
-                    android:id="@+id/AddList_Btn_AddTask"
+                    android:id="@+id/ShowList_Btn_AddTask"
                     android:layout_width="65dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/brown"
@@ -105,7 +78,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="1.5"
+            android:layout_weight="65"
             android:orientation="vertical">
 
             <TextView
@@ -131,29 +104,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/Main_rv_InProcess_Task"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_weight="0.5"
-            android:orientation="vertical">
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/AddList_Btn_Finish"
-                android:layout_width="320dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="3.3dp"
-                android:backgroundTint="@color/brown"
-                android:text="@string/addList_Btn_AddList"
-                app:cornerRadius="50dp"
-                app:icon="@drawable/ic_add_24"
-                app:iconGravity="textStart" />
-        </LinearLayout>
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

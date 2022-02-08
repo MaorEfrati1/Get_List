@@ -36,6 +36,12 @@ public class Register extends AppCompatActivity {
     private TextView textView_SignIn;
     private ProgressBar pB_Loading;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(Register.this, Login.class));
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +68,11 @@ public class Register extends AppCompatActivity {
 
         pB_Loading = findViewById(R.id.register_Pb_Loading);
 
-        if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(Register.this, MainActivity.class));
-            finish();
-        }
+            if (fAuth.getCurrentUser() != null) {
+                startActivity(new Intent(Register.this, MainActivity.class));
+                finish();
+            }
+
 
         btn_register.setOnClickListener(v -> {
             String firstName = editText_FirstName.getText().toString().trim();
@@ -83,7 +90,7 @@ public class Register extends AppCompatActivity {
                 return;
             }
             if (TextUtils.isEmpty(email)) {
-                editText_Email.setError("Email Name Is Required");
+                editText_Email.setError("Email Is Required");
                 return;
             }
             if (TextUtils.isEmpty(password)) {
@@ -120,6 +127,7 @@ public class Register extends AppCompatActivity {
 
                     Toast.makeText(Register.this, "User Created Successfully", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Register.this, MainActivity.class));
+                    finish();
                 } else {
                     pB_Loading.setVisibility(View.GONE);
                     Toast.makeText(Register.this, "Error " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -133,6 +141,7 @@ public class Register extends AppCompatActivity {
         textView_SignIn.setOnClickListener(v1 -> {
             Intent intent = new Intent(Register.this, Login.class);
             startActivity(intent);
+            finish();
         });
 
     }

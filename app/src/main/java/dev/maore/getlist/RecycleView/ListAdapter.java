@@ -1,9 +1,7 @@
 package dev.maore.getlist.RecycleView;
 
-import static dev.maore.getlist.Model.FireBaseDB.getListItemTasks;
-import static dev.maore.getlist.Model.FireBaseDB.getList_Item;
-
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ClipData;
 
 import android.content.Intent;
@@ -24,14 +22,16 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import dev.maore.getlist.Model.AddList;
 import dev.maore.getlist.Model.FireBaseDB;
 import dev.maore.getlist.Model.List_Item;
-import dev.maore.getlist.Model.Lists;
+import dev.maore.getlist.Model.MainActivity;
+import dev.maore.getlist.Model.Register;
+import dev.maore.getlist.Model.ShowList;
 import dev.maore.getlist.R;
 
 public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder>
@@ -50,6 +50,7 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
     private List<String> tasks;
 
     public static boolean isDeleteListItem = false;
+    private static String getListUidForEdit = "";
 
     public ListAdapter(List<List_Item> lists, Listener listener) {
         this.lists = lists;
@@ -75,12 +76,6 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         List_Item list_item = getListItem(position);
 
         holder.listName.setText(list_item.getListName());
-//        if (list_item.getTaskList() != null) {
-//            holder.list_item.setTaskList(list_item.getTaskList());
-//        }
-//        holder.list_item.setUid(list_item.getUid());
-//        holder.list_item.setPosition(list_item.getPosition());
-//        holder.list_item.setProcess(list_item.getProcess());
         holder.MaterialCardView.setTag(position);
         holder.MaterialCardView.setOnTouchListener(this);
         holder.MaterialCardView.setOnDragListener(new dev.maore.getlist.RecycleView.DragListener(listener));
@@ -145,13 +140,14 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             ButterKnife.bind(this, itemView);
 
             //Open List Item
-            itemView.findViewById(R.id.List_Tv_listName).setOnClickListener(new View.OnClickListener() {
+            listName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Log.d("ptt", "onClick: ." + list_item.getListName());
-                }
+                    Log.d("ptt", "onClick: ." + list_item.getUid());
+                    setGetListUidForEdit(list_item.getUid());
+                    itemView.getContext().startActivity(new Intent(itemView.getContext(), ShowList.class));
+                    ((Activity)itemView.getContext()).finish();                }
             });
-
 
             //Delete List Item
             deleteListItem.setOnClickListener(new View.OnClickListener() {
@@ -185,12 +181,22 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                         public void dataReady(List<String> taskList) {
                             tasks = taskList;
                             if (tasks != null) {
-                                Intent sendIntent = new Intent();
-                                sendIntent.setAction(Intent.ACTION_SEND);
-                                sendIntent.putExtra(Intent.EXTRA_TEXT, list_item.ShareListItem("Maor", "Efrati", tasks));
-                                sendIntent.setType("text/plain");
-                                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                                itemView.getContext().startActivity(shareIntent);
+                                FireBaseDB.getUserFirstName(fAuth, database, new FireBaseDB.Callback_UserFirstName() {
+                                    @Override
+                                    public void dataReady(String userFirstName) {
+                                        FireBaseDB.getUserLastName(fAuth, database, new FireBaseDB.Callback_UserLastName() {
+                                            @Override
+                                            public void dataReady(String userLastName) {
+                                                Intent sendIntent = new Intent();
+                                                sendIntent.setAction(Intent.ACTION_SEND);
+                                                sendIntent.putExtra(Intent.EXTRA_TEXT, list_item.ShareListItem(userFirstName, userLastName, tasks));
+                                                sendIntent.setType("text/plain");
+                                                Intent shareIntent = Intent.createChooser(sendIntent, null);
+                                                itemView.getContext().startActivity(shareIntent);
+                                            }
+                                        });
+                                    }
+                                });
                             }
                         }
                     });
@@ -205,5 +211,13 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
 
     public static void setIsDeleteListItem(boolean isDeleteListItem) {
         ListAdapter.isDeleteListItem = isDeleteListItem;
+    }
+
+    public static String getGetListUidForEdit() {
+        return getListUidForEdit;
+    }
+
+    public static void setGetListUidForEdit(String getListUidForEdit) {
+        ListAdapter.getListUidForEdit = getListUidForEdit;
     }
 }

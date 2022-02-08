@@ -1,34 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_alignParentTop="true"
+    android:background="@drawable/screen_background"
     android:gravity="center_horizontal"
     android:orientation="vertical">
+
+    <include layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="20"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:layout_weight="10"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/Main_Btn_AddList"
+        <TextView
+            android:id="@+id/Main_Tv_MyLists"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/Main_Btn_add" />
+            android:layout_marginTop="20dp"
+            android:gravity="center_horizontal"
+            android:text="@string/Main_Tv_MyLists"
+            android:textColor="@color/brown"
+            android:textSize="35sp" />
 
-        <Button
-            android:id="@+id/Main_Btn_LogOut"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/Main_Btn_LogOut" />
 
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_weight="80"
         android:orientation="horizontal">
 
@@ -46,22 +54,27 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:text="@string/main_Tv_InProcess"
+                android:textColor="@color/brown"
                 android:textSize="25sp" />
 
             <TextView
                 android:id="@+id/Main_Tv_InProcess"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="#cccccc"
+                android:layout_marginTop="0.5dp"
+                android:background="@color/brown"
                 android:gravity="center"
                 android:text="@string/main_Tv_WellDone"
+                android:layout_marginBottom="7dp"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:visibility="gone" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/Main_rv_InProcess"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp" />
 
 
         </LinearLayout>
@@ -69,8 +82,10 @@
         <View
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginTop="64dp"
+            android:layout_marginBottom="7dp"
             android:layout_weight="2"
-            android:background="#cccccc" />
+            android:background="@color/brown" />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -86,23 +101,46 @@
                 android:paddingTop="20dp"
                 android:paddingBottom="10dp"
                 android:text="@string/main_Tv_Done"
+                android:textColor="@color/brown"
                 android:textSize="25sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/Main_rv_Done"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:layout_marginBottom="10dp" />
 
             <TextView
                 android:id="@+id/Main_Tv_Done"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#cccccc"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_marginTop="0.5dp"
+                android:background="@color/brown"
                 android:gravity="center"
                 android:text="@string/main_Tv_YouNeedToDoSomeWork"
+                android:layout_marginBottom="7dp"
+                android:textColor="@color/white"
                 android:textSize="20sp"
                 android:visibility="gone" />
         </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_gravity="right"
+        android:layout_weight="10"
+        android:orientation="vertical">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/Main_Btn_AddList"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="11dp"
+            android:src="@drawable/ic_add_24"
+            app:fabSize="normal"
+            app:maxImageSize="39dp" />
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>

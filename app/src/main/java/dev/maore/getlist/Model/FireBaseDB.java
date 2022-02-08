@@ -1,7 +1,6 @@
 package dev.maore.getlist.Model;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -15,9 +14,63 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.security.auth.callback.Callback;
-
 public class FireBaseDB {
+
+
+    //Get user first name
+    public interface Callback_UserFirstName {
+        void dataReady(String userFirstName);
+    }
+
+    public static void getUserFirstName(FirebaseAuth fAuth, FirebaseDatabase database, Callback_UserFirstName callback_userFirstName) {
+
+        // Read user from the database
+        String userUid = fAuth.getCurrentUser().getUid();
+        DatabaseReference userRef = database.getReference("users").child(userUid);
+        userRef.child("firstName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userData = dataSnapshot.getValue(String.class);
+                if (callback_userFirstName != null) {
+                    callback_userFirstName.dataReady(userData);
+                    Log.d("user", "Get user " + userData);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
+    //Get user Last name
+
+    public interface Callback_UserLastName {
+        void dataReady(String userLastName);
+    }
+
+    public static void getUserLastName(FirebaseAuth fAuth, FirebaseDatabase database, Callback_UserLastName callbackUserLastName) {
+
+        // Read user from the database
+        String userUid = fAuth.getCurrentUser().getUid();
+        DatabaseReference userRef = database.getReference("users").child(userUid);
+        userRef.child("lastName").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String userData = dataSnapshot.getValue(String.class);
+                if (callbackUserLastName != null) {
+                    callbackUserLastName.dataReady(userData);
+                    Log.d("user", "Get user Last name " + userData);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
 
 
     //Get Lists
@@ -83,10 +136,11 @@ public class FireBaseDB {
         });
     }
 
- //Get List_Item tasks
- public interface Callback_ListItemTasks {
-     void dataReady(List<String> taskList);
- }
+    //Get List_Item tasks
+    public interface Callback_ListItemTasks {
+        void dataReady(List<String> taskList);
+    }
+
     public static void getListItemTasks(FirebaseDatabase database, String ListUid, Callback_ListItemTasks callback_listItemTasks) {
 
         // Read List_Item from the database

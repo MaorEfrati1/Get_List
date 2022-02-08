@@ -1,11 +1,13 @@
 package dev.maore.getlist.Model;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,6 +41,11 @@ public class Login extends AppCompatActivity {
     private TextView textView_SignUp;
     private ProgressBar pB_Loading;
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +78,7 @@ public class Login extends AppCompatActivity {
             finish();
         }
 
+
         btn_Login.setOnClickListener(v -> {
 
             String email = editText_Email.getText().toString().trim();
@@ -99,9 +107,9 @@ public class Login extends AppCompatActivity {
                 if (task.isSuccessful()) {
 
 
-
                     Toast.makeText(Login.this, "Logged In Successfully", Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Login.this, MainActivity.class));
+                    finish();
                 } else {
                     pB_Loading.setVisibility(View.GONE);
                     Toast.makeText(Login.this, "Error " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -109,48 +117,51 @@ public class Login extends AppCompatActivity {
             });
         });
 
-        //Forgot Password
+        //LogOut
         textView_ForgotPassword.setOnClickListener(v -> {
             final EditText editText_resetEmail = new EditText(v.getContext());
             final AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
             passwordResetDialog.setTitle("Reset Password ?");
-            passwordResetDialog.setMessage("Enter your Email To Received Reset Link");
+            passwordResetDialog.setMessage("Enter Your Email To Received Reset Link");
             passwordResetDialog.setView(editText_resetEmail);
+
+            passwordResetDialog.setNegativeButton("No", (dialog, which) -> {
+            });
 
             passwordResetDialog.setPositiveButton("Yes", (dialog, which) -> {
                 String email = editText_resetEmail.getText().toString();
                 fAuth.sendPasswordResetEmail(email).addOnSuccessListener(unused -> Toast.makeText(Login.this, "Reset Link Sent to your Email", Toast.LENGTH_SHORT).show()).addOnFailureListener(e -> Toast.makeText(Login.this, "Error! Reset Link Is Not Sent" + e.getMessage(), Toast.LENGTH_SHORT).show());
             });
-            passwordResetDialog.setNegativeButton("No", (dialog, which) -> {
-            });
             passwordResetDialog.create().show();
+
         });
 
         //Sign Up
         textView_SignUp.setOnClickListener(v1 -> {
             Intent intent = new Intent(Login.this, Register.class);
             startActivity(intent);
+            finish();
         });
     }
 
     //update user data from auth to DB
-    public void updateUserPasswordAfterForgot(String password) {
-        if (fAuth.getCurrentUser() != null) {
-            String userUid = fAuth.getCurrentUser().getUid();
+    public boolean updateUserPasswordAfterForgot(String userUid) {
+        final boolean[] bool = new boolean[1];
+        bool[0] = true;
+        // Read from the database
+        DatabaseReference userRef = database.getReference("users");
+        userRef.child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                bool[0] = true;
+            }
 
-            // Read from the database
-            DatabaseReference userRef = database.getReference("users");
-
-            userRef.child(userUid).addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    Toast.makeText(Login.this, "Error - Cannot Read User From Database", Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Toast.makeText(Login.this, "Error - Cannot Read User From Database", Toast.LENGTH_SHORT).show();
+                bool[0] = false;
+            }
+        });
+        return bool[0];
     }
 }

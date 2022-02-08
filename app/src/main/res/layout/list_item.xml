@@ -3,9 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/List_MCV_Item"
-    android:layout_width="160dp"
-    android:layout_height="70dp"
+    android:layout_width="155dp"
+    android:layout_height="95dp"
     android:layout_marginStart="10dp"
+    app:cardBackgroundColor="@color/ListItem"
     android:layout_marginTop="10dp"
     android:layout_marginEnd="20dp"
     android:layout_marginBottom="10dp"
@@ -23,29 +24,30 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="20"
+            android:layout_weight="15"
             android:baselineAligned="false"
             android:orientation="horizontal">
 
-<!--            <com.google.android.material.checkbox.MaterialCheckBox-->
-<!--                android:id="@+id/List_Cb_Checked"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_gravity="center" />-->
-
+            <ImageView
+                android:id="@+id/List_Iv_DragList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                app:srcCompat="@drawable/drag_list"
+                android:contentDescription="@string/dragList" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="80"
+            android:layout_weight="85"
             android:baselineAligned="false"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
-                android:layout_weight="60"
+                android:layout_weight="70"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
                 tools:ignore="NestedWeights">
@@ -54,8 +56,9 @@
                     android:id="@+id/List_Tv_listName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center"
                     android:layout_marginStart="4dp"
+                    android:gravity="center_horizontal"
+                    android:textColor="@color/brown"
                     android:textSize="15sp"
                     android:paddingTop="5dp"
                     android:text="@string/list_item_listName" />
@@ -66,7 +69,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_gravity="center"
-                android:layout_weight="40"
+                android:layout_marginTop="5dp"
+                android:layout_weight="30"
                 android:baselineAligned="false"
                 android:orientation="horizontal">
 
@@ -76,7 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginRight="14dp"
-                    android:src="@drawable/edit" />
+                    android:src="@drawable/add_friend" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/List_Iv_Share"

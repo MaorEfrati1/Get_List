@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background"
+    android:background="@drawable/log_reg_background"
     android:orientation="vertical"
     tools:context=".Model.Login">
 
@@ -16,6 +16,7 @@
         android:layout_marginBottom="10dp"
         android:paddingTop="70dp"
         android:text="@string/app_name"
+        android:textColor="@color/brown"
         android:textSize="35sp" />
 
 
@@ -27,6 +28,7 @@
         android:layout_marginBottom="10dp"
         android:paddingTop="10dp"
         android:text="@string/login_page_name"
+        android:textColor="@color/brown"
         android:textSize="25sp" />
 
 
@@ -38,8 +40,11 @@
         android:layout_marginBottom="10dp"
         android:ems="10"
         android:hint="@string/login_email"
+
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/brown"
         android:textSize="16sp" />
 
     <EditText
@@ -52,6 +57,8 @@
         android:hint="@string/login_password"
         android:inputType="textPassword"
         android:minHeight="48dp"
+        android:textColor="@color/black"
+        android:textColorHint="@color/brown"
         android:textSize="16sp" />
 
 
@@ -61,31 +68,30 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
         android:layout_marginBottom="10dp"
-
-
-        android:text="@string/login_forgot_password" />
+        android:text="@string/login_forgot_password"
+        android:textColor="@color/brown"
+        android:textSize="15sp" />
 
     <Button
         android:id="@+id/login_Btn_Login"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:layout_marginStart="45dp"
         android:layout_marginBottom="10dp"
-        android:backgroundTint="@color/black"
-        android:text="@string/login_login_btn"
-        tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="506dp" />
+        android:backgroundTint="@color/brown"
+        android:text="@string/login_login_btn" />
 
     <TextView
         android:id="@+id/login_Btn_SignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_marginStart="45dp"
         android:layout_marginBottom="10dp"
-
         android:text="@string/login_sign_up"
-
-        android:textSize="15sp" />
+        android:textColor="@color/brown"
+        android:textSize="17sp" />
 
     <ProgressBar
         android:id="@+id/login_Pb_Loading"

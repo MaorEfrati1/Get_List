@@ -97,7 +97,7 @@ public class List_Item  implements Comparable<List_Item>{
 
         share ="Hi,\n\n" +userFirstName +" "+userLastName+" share List with you:\n"+
                 "\nList Name: " +listName+
-                "\n\n Tasks: \n" + temp;
+                "\n Tasks: \n" + temp;
 
         Log.d("listItemTasks",toString());
         return share;

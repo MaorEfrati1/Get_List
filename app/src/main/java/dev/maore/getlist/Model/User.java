@@ -1,13 +1,15 @@
 package dev.maore.getlist.Model;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private String firstName = "";
     private String lastName = "";
     private String email = "";
     private String uid;
-    private ArrayList<List_Item> lists = new ArrayList<>();
+//    private ArrayList<List_Item> lists = new ArrayList<>();
+    private List<Lists> lists = new ArrayList<>();
 
     public User() {
     }
@@ -52,11 +54,11 @@ public class User {
         return this;
     }
 
-    public ArrayList<List_Item> getLists() {
+    public List<Lists> getLists() {
         return lists;
     }
 
-    public User setLists(ArrayList<List_Item> lists) {
+    public User setLists(List<Lists> lists) {
         this.lists = lists;
         return this;
     }

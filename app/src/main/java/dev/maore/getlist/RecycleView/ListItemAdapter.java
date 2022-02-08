@@ -1,18 +1,22 @@
 package dev.maore.getlist.RecycleView;
 
+import static dev.maore.getlist.Model.AddList.getOptDeleteTask;
+import static dev.maore.getlist.RecycleView.ListAdapter.getGetListUidForEdit;
+
 import android.annotation.SuppressLint;
 import android.content.ClipData;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,12 +27,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dev.maore.getlist.Model.FireBaseDB;
-import dev.maore.getlist.Model.List_Item;
 import dev.maore.getlist.R;
 
-public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListViewHolder>
-        implements View.OnTouchListener {
+public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListViewHolder> {
     //FireBase
     //Auth
     private FirebaseAuth fAuth = FirebaseAuth.getInstance();
@@ -39,17 +40,18 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListVi
 
     //LISTS
     private Listener listener;
-    private List<List_Item> lists;
-    private List<String> tasks;
+    private List<String> lists;
 
+    //parameters
     public static boolean isDeleteListItem = false;
+    private int pos;
 
-    public ListItemAdapter(List<List_Item> lists, Listener listener) {
+    public ListItemAdapter(List<String> lists, Listener listener) {
         this.lists = lists;
         this.listener = listener;
     }
 
-    private List_Item getListItem(int position) {
+    private String getListItem(int position) {
         return lists.get(position);
     }
 
@@ -57,27 +59,32 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListVi
     @NonNull
     @Override
     public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
         View view = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.list_item, parent, false);
+                parent.getContext()).inflate(R.layout.list_item_task, parent, false);
         return new ListViewHolder(view);
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
-    public void onBindViewHolder(ListViewHolder holder, int position) {
-        List_Item list_item = getListItem(position);
-
-        holder.listName.setText(list_item.getListName());
-//        if (list_item.getTaskList() != null) {
-//            holder.list_item.setTaskList(list_item.getTaskList());
-//        }
-//        holder.list_item.setUid(list_item.getUid());
-//        holder.list_item.setPosition(list_item.getPosition());
-//        holder.list_item.setProcess(list_item.getProcess());
+    public void onBindViewHolder(ListViewHolder holder, @SuppressLint("RecyclerView") int position) {
+        String taskList = getListItem(position);
+        pos = position;
+        holder.listName.setText(taskList);
         holder.MaterialCardView.setTag(position);
-        holder.MaterialCardView.setOnTouchListener(this);
         holder.MaterialCardView.setOnDragListener(new DragListener(listener));
-        holder.list_item = list_item;
+        holder.taskList = taskList;
+
+        //checked issue
+        holder.CheckedListItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener()  {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                //set TaskList last checked status
+//                holder.CheckedListItem.
+            }
+        });
     }
 
 
@@ -87,24 +94,11 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListVi
     }
 
 
-    @SuppressLint("ClickableViewAccessibility")
-    @Override
-    public boolean onTouch(View v, MotionEvent event) {
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            ClipData data = ClipData.newPlainText("", "");
-            View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(v);
-            v.startDragAndDrop(data, shadowBuilder, v, 0);
-            return true;
-        }
-        return false;
-    }
-
-
-    List<List_Item> getLists() {
+    List<String> getLists() {
         return lists;
     }
 
-    public void updateList(List<List_Item> list) {
+    public void updateList(List<String> list) {
         this.lists = list;
     }
 
@@ -118,85 +112,74 @@ public class ListItemAdapter extends RecyclerView.Adapter<ListItemAdapter.ListVi
     }
 
     public class ListViewHolder extends RecyclerView.ViewHolder {
-        List_Item list_item;
+        String taskList;
 
         @SuppressLint("NonConstantResourceId")
-        @BindView(R.id.List_Tv_listName)
+        @BindView(R.id.ListItem_Tv_TaskName)
         public MaterialTextView listName;
         @SuppressLint("NonConstantResourceId")
-        @BindView(R.id.List_MCV_Item)
+        @BindView(R.id.List_MCV_Item_Task)
         public MaterialCardView MaterialCardView;
         @SuppressLint("NonConstantResourceId")
-        @BindView(R.id.List_Iv_Delete)
+        @BindView(R.id.ListItem_Iv_DeleteTask)
         public ShapeableImageView deleteListItem;
         @SuppressLint("NonConstantResourceId")
-        @BindView(R.id.List_Iv_Share)
-        public ShapeableImageView shareListItem;
+        @BindView(R.id.List_Cb_Checked)
+        public MaterialCheckBox CheckedListItem;
+
 
         ListViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
-            //Open List Item
-            itemView.findViewById(R.id.List_Tv_listName).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("ptt", "onClick: ." + list_item.getListName());
-                }
-            });
 
+            //Delete & Checked List Item
 
-            //Delete List Item
-            deleteListItem.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
+            //Check if its edit/create mod
+            if (getOptDeleteTask() == 1) {
+                deleteListItem.setVisibility(View.GONE);
+                CheckedListItem.setVisibility(View.GONE);
+            } else {
+                //Delete List Item
+                deleteListItem.setOnClickListener(v -> {
+
                     // Delete List_Item from "LISTS" in the database
-                    DatabaseReference listItemRef = database.getReference("lists").child(list_item.getUid());
+                    DatabaseReference listItemRef = database.getReference("lists").child(getGetListUidForEdit()).child("taskList").child(Integer.toString(getAdapterPosition()));
                     listItemRef.removeValue();
 
-                    // Delete List_Item from "USERS" in the database
-                    String userUid = fAuth.getCurrentUser().getUid();
-                    DatabaseReference usersRef = database.getReference("users").child(userUid).child("lists").child(list_item.getUid());
-                    usersRef.removeValue();
-
                     for (int i = 0; i < lists.size(); i++) {
-                        if (lists.get(i).getUid().equals(list_item.getUid())) {
+                        if (lists.get(i).equals(taskList)) {
                             lists.remove(i);
                             notifyItemRemoved(i);
                         }
                     }
 
                     setIsDeleteListItem(true);
-                }
-            });
+                });
 
-            //Shared list
-            shareListItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FireBaseDB.getListItemTasks(database, list_item.getUid(), new FireBaseDB.Callback_ListItemTasks() {
-                        @Override
-                        public void dataReady(List<String> taskList) {
-                            tasks = taskList;
-                            if (tasks != null) {
-                                Intent sendIntent = new Intent();
-                                sendIntent.setAction(Intent.ACTION_SEND);
-                                sendIntent.putExtra(Intent.EXTRA_TEXT, list_item.ShareListItem("Maor", "Efrati", tasks));
-                                sendIntent.setType("text/plain");
-                                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                                itemView.getContext().startActivity(shareIntent);
-                            }
-                        }
-                    });
-                }
-            });
+                //Checked List Item
+                CheckedListItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+//                        if(CheckedListItem.isChecked()){
+//                            CheckedListItem.setChecked(true);
+//                        }else{
+//                            CheckedListItem.setChecked(false);
+//                        }
+                    }
+                });
+            }
+
+
         }
     }
 
-    public static boolean getIsIsDeleteListItem() {
+    public static boolean getIsDeleteListItem() {
         return isDeleteListItem;
     }
 
     public static void setIsDeleteListItem(boolean isDeleteListItem) {
         ListItemAdapter.isDeleteListItem = isDeleteListItem;
     }
+
 }
