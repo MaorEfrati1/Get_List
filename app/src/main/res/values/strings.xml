@@ -30,4 +30,12 @@
     <string name="Main_Tv_MyLists">My Lists</string>
     <string name="ToolBar_Iv_RefreshDB">ToolBarRefreshDB</string>
     <string name="ToolBar_Iv_UserLogOut">ToolBarLogOut</string>
+    <string name="addMember_Tv_AddMemberToList">Add Member To List</string>
+    <string name="addMember_Tv_AddMail"><U>Enter Email Member:</U></string>
+    <string name="addMember_Ev_AddMail">Email</string>
+    <string name="addMember_Switch_Read"><B>Read Only</B></string>
+    <string name="addMember_Switch_Edit"><B>Edit</B></string>
+    <string name="addMember_Tv_Permissions"><u>Permissions</u></string>
+    <string name="addMember_Btn_AddMember">Add Member To List</string>
+    <string name="addMember_Tv_ChoosePermissions">Choose Permissions For Member:</string>
 </resources>

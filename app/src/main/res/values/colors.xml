@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="brown">#694206</color>
     <color name="ListItem">#f2d09e</color>
+    <color name="ListItemChecked">#B6B6B6</color>
 </resources>

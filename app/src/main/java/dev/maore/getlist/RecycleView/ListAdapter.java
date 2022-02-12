@@ -26,11 +26,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import dev.maore.getlist.Model.AddList;
-import dev.maore.getlist.Model.FireBaseDB;
+import dev.maore.getlist.Model.AddMember;
+import dev.maore.getlist.Utils.FireBaseDB;
 import dev.maore.getlist.Model.List_Item;
-import dev.maore.getlist.Model.MainActivity;
-import dev.maore.getlist.Model.Register;
 import dev.maore.getlist.Model.ShowList;
 import dev.maore.getlist.R;
 
@@ -134,6 +132,9 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         @SuppressLint("NonConstantResourceId")
         @BindView(R.id.List_Iv_Share)
         public ShapeableImageView shareListItem;
+        @SuppressLint("NonConstantResourceId")
+        @BindView(R.id.List_Iv_AddMember)
+        public ShapeableImageView addMemberListItem;
 
         ListViewHolder(View itemView) {
             super(itemView);
@@ -148,6 +149,17 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
                     itemView.getContext().startActivity(new Intent(itemView.getContext(), ShowList.class));
                     ((Activity)itemView.getContext()).finish();                }
             });
+
+            //Add Member to List
+            addMemberListItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setGetListUidForEdit(list_item.getUid());
+                    itemView.getContext().startActivity(new Intent(itemView.getContext(), AddMember.class));
+                    ((Activity)itemView.getContext()).finish();
+                }
+            });
+
 
             //Delete List Item
             deleteListItem.setOnClickListener(new View.OnClickListener() {

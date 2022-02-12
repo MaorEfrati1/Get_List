@@ -1,8 +1,5 @@
 package dev.maore.getlist.Model;
 
-import static dev.maore.getlist.RecycleView.ListAdapter.getIsIsDeleteListItem;
-import static dev.maore.getlist.RecycleView.ListAdapter.setIsDeleteListItem;
-
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,7 +16,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,11 +23,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Timer;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import dev.maore.getlist.RecycleView.Listener;
+import dev.maore.getlist.Utils.FireBaseDB;
 
 public class MainActivity extends AppCompatActivity implements Listener {
     //FireBase
@@ -180,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
 
                 for (int i = 0; i < lists.size(); i++) {
 
-                    FireBaseDB.getList_Item(database, allLists.get(i).getUid(), new FireBaseDB.Callback_ListItem() {
+                    FireBaseDB.getList_Item(database, allLists.get(i).getLid(), new FireBaseDB.Callback_ListItem() {
                         @SuppressLint("NotifyDataSetChanged")
                         @Override
                         public void dataReady(List_Item list_items) {

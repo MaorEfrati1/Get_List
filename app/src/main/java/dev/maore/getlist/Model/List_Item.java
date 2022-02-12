@@ -2,6 +2,8 @@ package dev.maore.getlist.Model;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,11 +14,7 @@ public class List_Item  implements Comparable<List_Item>{
     private int position;
     private String process;
     private List<String> TaskList = new ArrayList<>();
-
-    private enum process {
-        IN_PROCESS,
-        DONE
-    }
+    private List<Boolean> TaskListChecked = new ArrayList<>();
 
     public List_Item() {
     }
@@ -70,6 +68,15 @@ public class List_Item  implements Comparable<List_Item>{
         return this;
     }
 
+    public List<Boolean> getTaskListChecked() {
+        return TaskListChecked;
+    }
+
+    public List_Item setTaskListChecked(List<Boolean> taskListChecked) {
+        TaskListChecked = taskListChecked;
+        return this;
+    }
+
     public int compareTo(List_Item list) {
         int comparePosition = ((List_Item) list).getPosition();
 
@@ -77,6 +84,7 @@ public class List_Item  implements Comparable<List_Item>{
         return this.position - comparePosition;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "List_Item{" +
@@ -85,10 +93,11 @@ public class List_Item  implements Comparable<List_Item>{
                 ", position=" + position +
                 ", process='" + process + '\'' +
                 ", TaskList=" + TaskList +
+                ", TaskListChecked=" + TaskListChecked +
                 '}';
     }
 
-    public String ShareListItem(String userFirstName,String userLastName,List<String> TaskList) {
+    public String ShareListItem(String userFirstName, String userLastName, List<String> TaskList) {
         String share;
         StringBuilder temp= new StringBuilder();
         for (int i=0;i<TaskList.size();i++){

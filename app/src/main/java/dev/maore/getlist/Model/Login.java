@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -89,6 +89,10 @@ public class Login extends AppCompatActivity {
                 editText_Email.setError("Email Name Is Required");
                 return;
             }
+            if (!Patterns.EMAIL_ADDRESS.matcher(editText_Email.getText()).matches()){
+                editText_Email.setError("Email Address Not Valid ");
+                return;
+            }
             if (TextUtils.isEmpty(password)) {
                 editText_Password.setError("Password Is Required");
                 return;
@@ -152,7 +156,7 @@ public class Login extends AppCompatActivity {
         DatabaseReference userRef = database.getReference("users");
         userRef.child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 bool[0] = true;
             }
 

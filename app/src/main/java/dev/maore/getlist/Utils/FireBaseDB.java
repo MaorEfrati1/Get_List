@@ -1,4 +1,4 @@
-package dev.maore.getlist.Model;
+package dev.maore.getlist.Utils;
 
 import android.util.Log;
 
@@ -13,6 +13,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import dev.maore.getlist.Model.List_Item;
+import dev.maore.getlist.Model.Lists;
 
 public class FireBaseDB {
 
@@ -161,6 +164,43 @@ public class FireBaseDB {
                 if (callback_listItemTasks != null) {
                     callback_listItemTasks.dataReady(tasks);
                     Log.d("lists", "Get Lists " + tasks);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+
+            }
+        });
+    }
+
+
+
+    //Get List_Item tasks
+    public interface Callback_ListItemTasksChecked {
+        void dataReady(List<Boolean> taskListChecked);
+    }
+
+    public static void getListItemTasksChecked(FirebaseDatabase database, String ListUid, Callback_ListItemTasksChecked callback_listItemTasksChecked) {
+
+        // Read List_Item from the database
+        DatabaseReference listItemRef = database.getReference("lists");
+
+        listItemRef.child(ListUid).child("taskListChecked").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<Boolean> tasksChecked = new ArrayList<>();
+                for (DataSnapshot child : dataSnapshot.getChildren()) {
+                    try {
+                        Log.d("lists", "val" + child.getValue());
+                        tasksChecked.add(child.getValue(Boolean.class));
+                    } catch (Exception e) {
+                        Log.d("lists", "Get Lists - ERROR :" + e.getMessage());
+                    }
+                }
+                if (callback_listItemTasksChecked != null) {
+                    callback_listItemTasksChecked.dataReady(tasksChecked);
+                    Log.d("lists", "Get Lists " + tasksChecked);
                 }
             }
 

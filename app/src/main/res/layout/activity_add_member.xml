@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/screen_background"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="55dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="75dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addMember_Tv_AddMemberToList"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="@string/addMember_Tv_AddMemberToList"
+                    android:textColor="@color/brown"
+                    android:textSize="28sp" />
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addMember_Tv_AddMail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:text="@string/addMember_Tv_AddMail"
+                    android:textColor="@color/brown"
+                    android:textSize="25sp" />
+
+                <EditText
+                    android:id="@+id/addMember_Ev_AddMail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/addMember_Ev_AddMail"
+                    android:inputType="textEmailAddress" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/addMember_Tv_Permissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:text="@string/addMember_Tv_Permissions"
+                    android:textColor="@color/brown"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/addMember_Tv_ChoosePermissions"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:text="@string/addMember_Tv_ChoosePermissions"
+                    android:textColor="@color/brown"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/addMember_Switch_Read"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginBottom="15dp"
+                    android:checked="true"
+                    android:text="@string/addMember_Switch_Read"
+                    android:textSize="18sp" />
+
+                <com.google.android.material.switchmaterial.SwitchMaterial
+                    android:id="@+id/addMember_Switch_Edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:text="@string/addMember_Switch_Edit"
+                    android:textSize="18sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/addMember_Btn_AddMember"
+                    android:layout_width="320dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="3.3dp"
+                    android:backgroundTint="@color/brown"
+                    android:text="@string/addMember_Btn_AddMember"
+                    app:cornerRadius="50dp"
+                    app:icon="@drawable/ic_add_24"
+                    app:iconGravity="textStart" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>

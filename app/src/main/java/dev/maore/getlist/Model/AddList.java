@@ -36,7 +36,8 @@ public class AddList extends AppCompatActivity implements Listener {
 
     //LISTS
     private List<String> taskList = new ArrayList<>();
-    private final ListItemAdapter inProcessListAdapter = new ListItemAdapter(taskList, this);
+    private List<Boolean> taskListChecked = new ArrayList<>();
+    private final ListItemAdapter inProcessListAdapter = new ListItemAdapter(taskList, this,taskListChecked);
 
 
     //Views
@@ -45,6 +46,7 @@ public class AddList extends AppCompatActivity implements Listener {
     private Button AddTaskToList;
     private Button Finish;
 
+    //Parameters
     private static int OptDeleteTask;
 
     @Override
@@ -100,10 +102,12 @@ public class AddList extends AppCompatActivity implements Listener {
             }
             String task = addTask.getText().toString();
             taskList.add(task);
+            taskListChecked.add(false);
             addTask.getText().clear();
 
             //Update RV
             inProcessListAdapter.updateList(taskList);
+            inProcessListAdapter.updateListChecked(taskListChecked);
             inProcessListAdapter.notifyDataSetChanged();
         });
 
@@ -123,6 +127,7 @@ public class AddList extends AppCompatActivity implements Listener {
                 List_Item list_item = new List_Item(uid)
                         .setListName(addListName.getText().toString())
                         .setTaskList(taskList)
+                        .setTaskListChecked(taskListChecked)
                         .setUid(uid)
                         .setPosition(-1)
                         .setProcess("IN_PROCESS");
@@ -149,59 +154,24 @@ public class AddList extends AppCompatActivity implements Listener {
                 this, LinearLayoutManager.VERTICAL, false));
 
 
-//        FireBaseDB.getLists(fAuth, database, new FireBaseDB.Callback_Lists() {
-//            @Override
-//            public void dataReady(List<Lists> lists) {
-//                allLists = lists;
-//
-//                for (int i = 0; i < lists.size(); i++) {
-//
-//                    FireBaseDB.getList_Item(database, allLists.get(i).getUid(), new FireBaseDB.Callback_ListItem() {
-//                        @SuppressLint("NotifyDataSetChanged")
-//                        @Override
-//                        public void dataReady(List_Item list_items) {
-//                            if (list_items.getProcess().equals("IN_PROCESS")) {
-//                                FireBaseDB.getListItemTasks(database, list_items.getUid(), new FireBaseDB.Callback_ListItemTasks() {
-//                                    @Override
-//                                    public void dataReady(List<String> taskList) {
-//                                        tasks = taskList;
-        //add List item & update RV
-//                                            inProcessListTask.add(list_items);
-
-        //Sort by pos
-//                                            inProcessListTask.sort(List_Item::compareTo);
-
-        //Update RV List
-
-
-//                                    }
-//                                });
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        });
-
-
         rvInProcess.setAdapter(inProcessListAdapter);
         tvEmptyListInProcess.setOnDragListener(inProcessListAdapter.getDragInstance());
         rvInProcess.setOnDragListener(inProcessListAdapter.getDragInstance());
     }
 
 
-    public void addListToUserDb(String uid) {
+    public void addListToUserDb(String lid) {
         // add List to DB (/users/lists/)
         String userUid = fAuth.getCurrentUser().getUid();
         DatabaseReference listsRef = database.getReference("users");
 
-        Lists lists = new Lists(uid)
+        Lists lists = new Lists(lid)
                 .setEditAble(true)
-                .setUid(uid);
+                .setLid(lid);
 
         //Add To Users Lists In DB
-        if (uid != null) {
-            listsRef.child(userUid).child("lists").child(uid).setValue(lists);
+        if (lid != null) {
+            listsRef.child(userUid).child("lists").child(lid).setValue(lists);
         }
     }
 
