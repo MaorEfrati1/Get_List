@@ -4,9 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_alignParentTop="true"
     android:background="@drawable/screen_background"
-    android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <LinearLayout
@@ -59,7 +57,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="5dp" />
+                android:layout_marginEnd="5dp"
+                android:inputType="text"/>
 
         </LinearLayout>
 
@@ -89,7 +88,8 @@
                     android:id="@+id/AddList_Et_AddTask"
                     android:layout_width="280dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp" />
+                    android:layout_marginStart="10dp"
+                    android:inputType="text" />
 
                 <Button
                     android:id="@+id/AddList_Btn_AddTask"

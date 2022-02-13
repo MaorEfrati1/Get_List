@@ -1,6 +1,5 @@
 package dev.maore.getlist.Model;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,18 +8,13 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import dev.maore.getlist.R;
 
@@ -30,14 +24,11 @@ public class Login extends AppCompatActivity {
     //Auth
     private FirebaseAuth fAuth;
 
-    //DataBase
-    private FirebaseDatabase database;
-
     //Views
     private EditText editText_Email;
     private EditText editText_Password;
     private TextView textView_ForgotPassword;
-    private Button btn_Login;
+    private MaterialButton btn_Login;
     private TextView textView_SignUp;
     private ProgressBar pB_Loading;
 
@@ -55,10 +46,6 @@ public class Login extends AppCompatActivity {
         //Firebase
         // Initialize Firebase Auth
         fAuth = FirebaseAuth.getInstance();
-
-        //database
-        database = FirebaseDatabase.getInstance();
-
 
         //Views
         editText_Email = findViewById(R.id.login_Et_Email);
@@ -89,7 +76,7 @@ public class Login extends AppCompatActivity {
                 editText_Email.setError("Email Name Is Required");
                 return;
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(editText_Email.getText()).matches()){
+            if (!Patterns.EMAIL_ADDRESS.matcher(editText_Email.getText()).matches()) {
                 editText_Email.setError("Email Address Not Valid ");
                 return;
             }
@@ -148,24 +135,4 @@ public class Login extends AppCompatActivity {
         });
     }
 
-    //update user data from auth to DB
-    public boolean updateUserPasswordAfterForgot(String userUid) {
-        final boolean[] bool = new boolean[1];
-        bool[0] = true;
-        // Read from the database
-        DatabaseReference userRef = database.getReference("users");
-        userRef.child(userUid).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                bool[0] = true;
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                Toast.makeText(Login.this, "Error - Cannot Read User From Database", Toast.LENGTH_SHORT).show();
-                bool[0] = false;
-            }
-        });
-        return bool[0];
-    }
 }

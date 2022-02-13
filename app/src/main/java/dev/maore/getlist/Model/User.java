@@ -1,5 +1,7 @@
 package dev.maore.getlist.Model;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,7 +10,6 @@ public class User {
     private String lastName = "";
     private String email = "";
     private String uid;
-//    private ArrayList<List_Item> lists = new ArrayList<>();
     private List<Lists> lists = new ArrayList<>();
 
     public User() {
@@ -63,6 +64,7 @@ public class User {
         return this;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "User{" +

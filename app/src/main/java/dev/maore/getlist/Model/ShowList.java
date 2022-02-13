@@ -4,7 +4,6 @@ package dev.maore.getlist.Model;
 import static dev.maore.getlist.Model.AddList.setOptDeleteTask;
 import static dev.maore.getlist.RecycleView.ListAdapter.getGetListUidForEdit;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,10 +19,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -48,14 +46,14 @@ public class ShowList extends AppCompatActivity implements Listener {
     //LISTS
     private List<String> taskList = new ArrayList<>();
     private List<Boolean> taskListChecked = new ArrayList<>();
-    private ListItemAdapter inProcessListAdapter = new ListItemAdapter(taskList, this, taskListChecked);
+    private final ListItemAdapter inProcessListAdapter = new ListItemAdapter(taskList, this, taskListChecked);
 
 
     //Views
     private TextView listName;
     private TextView enterTask;
     private EditText addTask;
-    private Button addTaskToList;
+    private MaterialButton addTaskToList;
 
     //parameters
     private boolean editAble;
@@ -118,60 +116,57 @@ public class ShowList extends AppCompatActivity implements Listener {
         //Check edit Able on DB
         String userId = fAuth.getCurrentUser().getUid();
         DatabaseReference editAbleRef = database.getReference("users").child(userId);
-        editAbleRef.child("lists").child(getGetListUidForEdit()).child("editAble").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if (!task.isSuccessful()) {
-                    Log.e("firebase", "Error getting data", task.getException());
-                } else {
-                    if (task.getResult().getValue() != null) {
-                        editAble = (boolean) task.getResult().getValue();
-                    }
+        editAbleRef.child("lists").child(getGetListUidForEdit()).child("editAble").get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            } else {
+                if (task.getResult().getValue() != null) {
+                    editAble = (boolean) task.getResult().getValue();
+                }
 
-                    if (editAble) {
-                        addTask.setVisibility(View.VISIBLE);
-                        enterTask.setVisibility(View.VISIBLE);
-                        addTaskToList.setVisibility(View.VISIBLE);
+                if (editAble) {
+                    addTask.setVisibility(View.VISIBLE);
+                    enterTask.setVisibility(View.VISIBLE);
+                    addTaskToList.setVisibility(View.VISIBLE);
 
-                        listName.setOnClickListener(v -> {
-                            final EditText editText_ChangeListName = new EditText(v.getContext());
-                            final AlertDialog.Builder ChangeListNameDialog = new AlertDialog.Builder(v.getContext());
-                            ChangeListNameDialog.setTitle("Change List Name");
-                            ChangeListNameDialog.setMessage("Enter The New List Name");
-                            ChangeListNameDialog.setView(editText_ChangeListName);
+                    listName.setOnClickListener(v -> {
+                        final EditText editText_ChangeListName = new EditText(v.getContext());
+                        final AlertDialog.Builder ChangeListNameDialog = new AlertDialog.Builder(v.getContext());
+                        ChangeListNameDialog.setTitle("Change List Name");
+                        ChangeListNameDialog.setMessage("Enter The New List Name");
+                        ChangeListNameDialog.setView(editText_ChangeListName);
 
-                            ChangeListNameDialog.setPositiveButton("Finish", (dialog, which) -> {
-                                //Change List name  in UI
-                                String newListName = editText_ChangeListName.getText().toString();
-                                listName.setText(newListName);
+                        ChangeListNameDialog.setPositiveButton("Finish", (dialog, which) -> {
+                            //Change List name  in UI
+                            String newListName = editText_ChangeListName.getText().toString();
+                            listName.setText(newListName);
 
-                                //Change List name in DB
-                                DatabaseReference listItemRef = database.getReference("lists");
-                                listItemRef.child(getGetListUidForEdit()).child("listName").setValue(newListName);
-                            });
-                            ChangeListNameDialog.create().show();
+                            //Change List name in DB
+                            DatabaseReference listItemRef = database.getReference("lists");
+                            listItemRef.child(getGetListUidForEdit()).child("listName").setValue(newListName);
                         });
+                        ChangeListNameDialog.create().show();
+                    });
 
 
-                        addTaskToList.setOnClickListener(v -> {
-                            if (TextUtils.isEmpty(addTask.getText())) {
-                                addTask.setError("Add Task Details");
-                                return;
-                            }
-                            String task1 = addTask.getText().toString();
-                            taskList.add(task1);
-                            taskListChecked.add(false);
-                            addTaskToDB();
-                            addTaskCheckedToDB();
-                            addTask.getText().clear();
+                    addTaskToList.setOnClickListener(v -> {
+                        if (TextUtils.isEmpty(addTask.getText())) {
+                            addTask.setError("Add Task Details");
+                            return;
+                        }
+                        String task1 = addTask.getText().toString();
+                        taskList.add(task1);
+                        taskListChecked.add(false);
+                        addTaskToDB();
+                        addTaskCheckedToDB();
+                        addTask.getText().clear();
 
-                            //Update RV
-                            inProcessListAdapter.updateList(taskList);
-                            inProcessListAdapter.updateListChecked(taskListChecked);
-                            inProcessListAdapter.notifyDataSetChanged();
-                        });
+                        //Update RV
+                        inProcessListAdapter.updateList(taskList);
+                        inProcessListAdapter.updateListChecked(taskListChecked);
+                        inProcessListAdapter.notifyDataSetChanged();
+                    });
 
-                    }
                 }
             }
         });
@@ -202,46 +197,34 @@ public class ShowList extends AppCompatActivity implements Listener {
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void getListItemTasks() {
-        FireBaseDB.getListItemTasks(database, getGetListUidForEdit(), new FireBaseDB.Callback_ListItemTasks() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void dataReady(List<String> tasks) {
-                //add tasks to RV
-                taskList = tasks;
+        FireBaseDB.getListItemTasks(database, getGetListUidForEdit(), tasks -> {
+            //add tasks to RV
+            taskList = tasks;
 
-                // Update RV List
-                inProcessListAdapter.updateList(taskList);
-                inProcessListAdapter.notifyDataSetChanged();
-            }
+            // Update RV List
+            inProcessListAdapter.updateList(taskList);
+            inProcessListAdapter.notifyDataSetChanged();
         });
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void getListItemTasksChecked() {
-        FireBaseDB.getListItemTasksChecked(database, getGetListUidForEdit(), new FireBaseDB.Callback_ListItemTasksChecked() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void dataReady(List<Boolean> taskChecked) {
-                //is tasks checked to RV
-                taskListChecked = taskChecked;
+        FireBaseDB.getListItemTasksChecked(database, getGetListUidForEdit(), taskChecked -> {
+            //is tasks checked to RV
+            taskListChecked = taskChecked;
 
-                // Update RV List
-                inProcessListAdapter.updateListChecked(taskListChecked);
-                inProcessListAdapter.notifyDataSetChanged();
-            }
+            // Update RV List
+            inProcessListAdapter.updateListChecked(taskListChecked);
+            inProcessListAdapter.notifyDataSetChanged();
         });
 
     }
 
     public void getListItemName() {
-        FireBaseDB.getList_Item(database, getGetListUidForEdit(), new FireBaseDB.Callback_ListItem() {
-            @SuppressLint("NotifyDataSetChanged")
-            @Override
-            public void dataReady(List_Item list_items) {
-                listName.setText(list_items.getListName());
-            }
-        });
+        FireBaseDB.getList_Item(database, getGetListUidForEdit(), list_items -> listName.setText(list_items.getListName()));
     }
 
     @SuppressLint("NotifyDataSetChanged")

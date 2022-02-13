@@ -2,6 +2,8 @@ package dev.maore.getlist.Model;
 
 import androidx.annotation.NonNull;
 
+import java.util.Objects;
+
 public class Lists {
 
     private String lid;
@@ -40,4 +42,14 @@ public class Lists {
                 ", editAble=" + editAble +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof Lists)) {
+            return false;
+        }
+        Lists other =(Lists)o;
+        return editAble == other.editAble && Objects.equals(lid, other.lid);
+    }
+
 }

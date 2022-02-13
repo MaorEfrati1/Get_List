@@ -96,7 +96,7 @@
         android:textSize="16sp" />
 
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/register_Btn_Register"
         android:layout_width="120dp"
         android:layout_height="wrap_content"

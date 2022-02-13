@@ -35,8 +35,8 @@ public class AddList extends AppCompatActivity implements Listener {
     private FirebaseDatabase database;
 
     //LISTS
-    private List<String> taskList = new ArrayList<>();
-    private List<Boolean> taskListChecked = new ArrayList<>();
+    private final List<String> taskList = new ArrayList<>();
+    private final List<Boolean> taskListChecked = new ArrayList<>();
     private final ListItemAdapter inProcessListAdapter = new ListItemAdapter(taskList, this,taskListChecked);
 
 

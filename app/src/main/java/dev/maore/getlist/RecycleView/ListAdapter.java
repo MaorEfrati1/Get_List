@@ -36,19 +36,20 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         implements View.OnTouchListener {
     //FireBase
     //Auth
-    private FirebaseAuth fAuth = FirebaseAuth.getInstance();
+    private final FirebaseAuth fAuth = FirebaseAuth.getInstance();
 
     //DataBase
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     //LISTS
-    private Listener listener;
+    private final Listener listener;
     private List<List_Item> lists;
     private List<String> tasks;
 
     public static boolean isDeleteListItem = false;
     private static String getListUidForEdit = "";
+    private boolean editAble;
 
     public ListAdapter(List<List_Item> lists, Listener listener) {
         this.lists = lists;
@@ -78,6 +79,28 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
         holder.MaterialCardView.setOnTouchListener(this);
         holder.MaterialCardView.setOnDragListener(new dev.maore.getlist.RecycleView.DragListener(listener));
         holder.list_item = list_item;
+
+        //For Read Only
+        //Check edit Able on DB
+        String userId = fAuth.getCurrentUser().getUid();
+        DatabaseReference editAbleRef = database.getReference("users").child(userId);
+        editAbleRef.child("lists").child(list_item.getUid()).child("editAble").get().addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Log.e("firebase", "Error getting data", task.getException());
+            } else {
+                if (task.getResult().getValue() != null) {
+                    editAble = (boolean) task.getResult().getValue();
+                    if (editAble) {
+                        holder.addMemberListItem.setVisibility(View.VISIBLE);
+                        holder.shareListItem.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.shareListItem.setVisibility(View.GONE);
+                        holder.addMemberListItem.setVisibility(View.GONE);
+                    }
+                }
+            }
+            });
+
     }
 
 
@@ -141,79 +164,54 @@ public class ListAdapter extends RecyclerView.Adapter<ListAdapter.ListViewHolder
             ButterKnife.bind(this, itemView);
 
             //Open List Item
-            listName.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Log.d("ptt", "onClick: ." + list_item.getUid());
-                    setGetListUidForEdit(list_item.getUid());
-                    itemView.getContext().startActivity(new Intent(itemView.getContext(), ShowList.class));
-                    ((Activity)itemView.getContext()).finish();                }
-            });
-
-            //Add Member to List
-            addMemberListItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    setGetListUidForEdit(list_item.getUid());
-                    itemView.getContext().startActivity(new Intent(itemView.getContext(), AddMember.class));
-                    ((Activity)itemView.getContext()).finish();
-                }
+            listName.setOnClickListener(v -> {
+                setGetListUidForEdit(list_item.getUid());
+                itemView.getContext().startActivity(new Intent(itemView.getContext(), ShowList.class));
+                ((Activity) itemView.getContext()).finish();
             });
 
 
-            //Delete List Item
-            deleteListItem.setOnClickListener(new View.OnClickListener() {
-                public void onClick(View v) {
-                    // Delete List_Item from "LISTS" in the database
-                    DatabaseReference listItemRef = database.getReference("lists").child(list_item.getUid());
-                    listItemRef.removeValue();
+                        //Add Member to List
+                        addMemberListItem.setOnClickListener(v -> {
+                            setGetListUidForEdit(list_item.getUid());
+                            itemView.getContext().startActivity(new Intent(itemView.getContext(), AddMember.class));
+                            ((Activity) itemView.getContext()).finish();
+                        });
 
-                    // Delete List_Item from "USERS" in the database
-                    String userUid = fAuth.getCurrentUser().getUid();
-                    DatabaseReference usersRef = database.getReference("users").child(userUid).child("lists").child(list_item.getUid());
-                    usersRef.removeValue();
 
-                    for (int i = 0; i < lists.size(); i++) {
-                        if (lists.get(i).getUid().equals(list_item.getUid())) {
-                            lists.remove(i);
-                            notifyItemRemoved(i);
-                        }
-                    }
+                        //Delete List Item
+                        deleteListItem.setOnClickListener(v -> {
 
-                    setIsDeleteListItem(true);
-                }
-            });
 
-            //Shared list
-            shareListItem.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FireBaseDB.getListItemTasks(database, list_item.getUid(), new FireBaseDB.Callback_ListItemTasks() {
-                        @Override
-                        public void dataReady(List<String> taskList) {
+                            // Delete List_Item from all "USERS" in the database
+                            String userUid = fAuth.getCurrentUser().getUid();
+                            DatabaseReference usersRef = database.getReference("users").child(userUid).child("lists").child(list_item.getUid());
+                            usersRef.removeValue();
+
+                            for (int i = 0; i < lists.size(); i++) {
+                                if (lists.get(i).getUid().equals(list_item.getUid())) {
+                                    lists.remove(i);
+                                    notifyItemRemoved(i);
+                                }
+                            }
+                            setIsDeleteListItem(true);
+                        });
+
+                        //Shared list
+                        shareListItem.setOnClickListener(v -> FireBaseDB.getListItemTasks(database, list_item.getUid(), taskList -> {
                             tasks = taskList;
                             if (tasks != null) {
-                                FireBaseDB.getUserFirstName(fAuth, database, new FireBaseDB.Callback_UserFirstName() {
-                                    @Override
-                                    public void dataReady(String userFirstName) {
-                                        FireBaseDB.getUserLastName(fAuth, database, new FireBaseDB.Callback_UserLastName() {
-                                            @Override
-                                            public void dataReady(String userLastName) {
-                                                Intent sendIntent = new Intent();
-                                                sendIntent.setAction(Intent.ACTION_SEND);
-                                                sendIntent.putExtra(Intent.EXTRA_TEXT, list_item.ShareListItem(userFirstName, userLastName, tasks));
-                                                sendIntent.setType("text/plain");
-                                                Intent shareIntent = Intent.createChooser(sendIntent, null);
-                                                itemView.getContext().startActivity(shareIntent);
-                                            }
-                                        });
-                                    }
-                                });
+                                FireBaseDB.getUserFirstName(fAuth, database, userFirstName -> FireBaseDB.getUserLastName(fAuth, database, userLastName -> {
+                                    Intent sendIntent = new Intent();
+                                    sendIntent.setAction(Intent.ACTION_SEND);
+                                    sendIntent.putExtra(Intent.EXTRA_TEXT, list_item.ShareListItem(userFirstName, userLastName, tasks));
+                                    sendIntent.setType("text/plain");
+                                    Intent shareIntent = Intent.createChooser(sendIntent, null);
+                                    itemView.getContext().startActivity(shareIntent);
+                                }));
                             }
-                        }
-                    });
-                }
-            });
+                        }));
+
         }
     }
 

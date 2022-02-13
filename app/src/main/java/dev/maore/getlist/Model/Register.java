@@ -7,12 +7,12 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -33,7 +33,7 @@ public class Register extends AppCompatActivity {
     private EditText editText_LastName;
     private EditText editText_Email;
     private EditText editText_Password;
-    private Button btn_register;
+    private MaterialButton btn_register;
     private TextView textView_SignIn;
     private ProgressBar pB_Loading;
 
@@ -69,10 +69,10 @@ public class Register extends AppCompatActivity {
 
         pB_Loading = findViewById(R.id.register_Pb_Loading);
 
-            if (fAuth.getCurrentUser() != null) {
-                startActivity(new Intent(Register.this, MainActivity.class));
-                finish();
-            }
+        if (fAuth.getCurrentUser() != null) {
+            startActivity(new Intent(Register.this, MainActivity.class));
+            finish();
+        }
 
 
         btn_register.setOnClickListener(v -> {
@@ -94,7 +94,7 @@ public class Register extends AppCompatActivity {
                 editText_Email.setError("Email Is Required");
                 return;
             }
-            if (!Patterns.EMAIL_ADDRESS.matcher(editText_Email.getText()).matches()){
+            if (!Patterns.EMAIL_ADDRESS.matcher(editText_Email.getText()).matches()) {
                 editText_Email.setError("Email Address Not Valid ");
                 return;
             }

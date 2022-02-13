@@ -32,7 +32,7 @@ public class FireBaseDB {
         DatabaseReference userRef = database.getReference("users").child(userUid);
         userRef.child("firstName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userData = dataSnapshot.getValue(String.class);
                 if (callback_userFirstName != null) {
                     callback_userFirstName.dataReady(userData);
@@ -41,7 +41,7 @@ public class FireBaseDB {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -60,7 +60,7 @@ public class FireBaseDB {
         DatabaseReference userRef = database.getReference("users").child(userUid);
         userRef.child("lastName").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 String userData = dataSnapshot.getValue(String.class);
                 if (callbackUserLastName != null) {
                     callbackUserLastName.dataReady(userData);
@@ -69,7 +69,7 @@ public class FireBaseDB {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -81,31 +81,45 @@ public class FireBaseDB {
         void dataReady(List<Lists> lists);
     }
 
+
     public static void getLists(FirebaseAuth fAuth, FirebaseDatabase database, Callback_Lists callback_lists) {
 
         // Read Lists from the database
         String userUid = fAuth.getCurrentUser().getUid();
-        DatabaseReference listsRef = database.getReference("users");
-        listsRef.child(userUid).child("lists").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference listsRef = database.getReference("users").child(userUid).child("lists");
+        listsRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                List<Lists> lists = new ArrayList<>();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot child : dataSnapshot.getChildren()) {
-                    try {
-                        Log.d("lists", "val" + child.getValue());
-                        lists.add(child.getValue(Lists.class));
-                    } catch (Exception e) {
-                        Log.d("lists", "Get Lists - ERROR :" + e.getMessage());
-                    }
-                }
-                if (callback_lists != null) {
-                    callback_lists.dataReady(lists);
-                    Log.d("lists", "Get Lists " + lists);
+                    // Read List_Item from the database
+                    DatabaseReference listItemRef = database.getReference("lists");
+                    listItemRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot1) {
+                            List<Lists> lists = new ArrayList<>();
+                            for (DataSnapshot data1 : dataSnapshot1.getChildren()) {
+                                if (!lists.contains(child.getValue(Lists.class))) {
+                                    if (child.getValue(Lists.class).getLid().equals(data1.getValue(List_Item.class).getUid())) {
+                                        //add list if exist
+                                        lists.add(child.getValue(Lists.class));
+                                    }
+                                }
+                            }
+                            if (callback_lists != null) {
+                                callback_lists.dataReady(lists);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                 }
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -124,7 +138,7 @@ public class FireBaseDB {
 
         listItemRef.child(ListUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List_Item list_item = dataSnapshot.getValue(List_Item.class);
                 if (callback_listItem != null) {
                     callback_listItem.dataReady(list_item);
@@ -133,11 +147,12 @@ public class FireBaseDB {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
+
 
     //Get List_Item tasks
     public interface Callback_ListItemTasks {
@@ -168,12 +183,11 @@ public class FireBaseDB {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
     }
-
 
 
     //Get List_Item tasks
@@ -205,7 +219,7 @@ public class FireBaseDB {
             }
 
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

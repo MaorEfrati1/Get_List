@@ -60,13 +60,13 @@
 
                 <EditText
                     android:id="@+id/ShowList_Et_AddTask"
-                    android:layout_width="280dp"
+                    android:layout_width="260dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/ShowList_Btn_AddTask"
-                    android:layout_width="65dp"
+                    android:layout_width="70dp"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/brown"
                     android:text="@string/addList_Btn_add" />

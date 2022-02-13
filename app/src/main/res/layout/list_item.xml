@@ -80,6 +80,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginRight="14dp"
+                    android:visibility="invisible"
                     android:src="@drawable/add_friend" />
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -88,6 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_marginRight="14dp"
+                    android:visibility="invisible"
                     android:src="@drawable/share" />
 
 

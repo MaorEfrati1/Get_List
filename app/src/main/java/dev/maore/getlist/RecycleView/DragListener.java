@@ -1,13 +1,11 @@
 package dev.maore.getlist.RecycleView;
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -19,11 +17,11 @@ import dev.maore.getlist.R;
 public class DragListener implements View.OnDragListener {
     //FireBase
     //DataBase
-    private FirebaseDatabase database = FirebaseDatabase.getInstance();
+    private final FirebaseDatabase database = FirebaseDatabase.getInstance();
 
 
     private boolean isDropped = false;
-    private Listener listener;
+    private final Listener listener;
 
     DragListener(Listener listener) {
         this.listener = listener;

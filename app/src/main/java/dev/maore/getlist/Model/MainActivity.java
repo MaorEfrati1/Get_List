@@ -13,7 +13,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,12 +37,11 @@ public class MainActivity extends AppCompatActivity implements Listener {
     private FirebaseDatabase database;
 
     //Views
-    private Button LogOut;
     private FloatingActionButton AddList;
 
     //LISTS
-    private List<List_Item> inProcessList = new ArrayList<>();
-    private List<List_Item> doneList = new ArrayList<>();
+    private final List<List_Item> inProcessList = new ArrayList<>();
+    private final List<List_Item> doneList = new ArrayList<>();
     private List<Lists> allLists;
     private final ListAdapter doneListAdapter = new ListAdapter(doneList, this);
     private final ListAdapter inProcessListAdapter = new ListAdapter(inProcessList, this);
@@ -63,9 +61,7 @@ public class MainActivity extends AppCompatActivity implements Listener {
     @BindView(R.id.Main_Tv_Done)
     TextView tvEmptyListDone;
 
-//    //List Item
-//    TextView listName;
-
+    //    //List Item
     @SuppressLint("NotifyDataSetChanged")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,33 +164,33 @@ public class MainActivity extends AppCompatActivity implements Listener {
     }
 
     //get List From DB
+    @SuppressLint("NotifyDataSetChanged")
     private void getListFromDB(List<List_Item> list, ListAdapter listAdapter, String process) {
-        FireBaseDB.getLists(fAuth, database, new FireBaseDB.Callback_Lists() {
-            @Override
-            public void dataReady(List<Lists> lists) {
-                allLists = lists;
+        FireBaseDB.getLists(fAuth, database, lists -> {
+            allLists = lists;
 
-                for (int i = 0; i < lists.size(); i++) {
+            for (int i = 0; i < lists.size(); i++) {
 
-                    FireBaseDB.getList_Item(database, allLists.get(i).getLid(), new FireBaseDB.Callback_ListItem() {
-                        @SuppressLint("NotifyDataSetChanged")
-                        @Override
-                        public void dataReady(List_Item list_items) {
-                            if (list_items.getProcess().equals(process)) {
 
-                                //add List item & update RV
-                                list.add(list_items);
+                //add list
+                FireBaseDB.getList_Item(database, allLists.get(i).getLid(), list_items -> {
 
-                                //Sort by pos
-                                list.sort(List_Item::compareTo);
+                    //Check if list exist
 
-                                //Update RV List
-                                listAdapter.updateList(list);
-                                listAdapter.notifyDataSetChanged();
-                            }
-                        }
-                    });
-                }
+                    //add list To RV
+                    if (list_items.getProcess().equals(process)) {
+
+                        //add List item & update RV
+                        list.add(list_items);
+
+                        //Sort by pos
+                        list.sort(List_Item::compareTo);
+
+                        //Update RV List
+                        listAdapter.updateList(list);
+                        listAdapter.notifyDataSetChanged();
+                    }
+                });
             }
         });
     }

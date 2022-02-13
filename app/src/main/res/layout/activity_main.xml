@@ -140,7 +140,8 @@
             android:layout_margin="11dp"
             android:src="@drawable/ic_add_24"
             app:fabSize="normal"
-            app:maxImageSize="39dp" />
+            app:maxImageSize="39dp"
+            android:contentDescription="@string/addList_Btn_AddList" />
     </LinearLayout>
 
 </androidx.appcompat.widget.LinearLayoutCompat>
